@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blockly 積木測試</title>
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <script src="https://unpkg.com/blockly/blocks.min.js"></script>
+    <script src="https://unpkg.com/blockly/javascript.min.js"></script>
+</head>
+
+<body>
+    <h1>積木代碼生成測試</h1>
+    <div id="blocklyDiv" style="width: 600px; height: 400px;"></div>
+    <pre id="output"></pre>
+
+    <script src="js/blockly-blocks.js"></script>
+    <script src="js/code-generator.js"></script>
+    <script>
+        let workspace = Blockly.inject('blocklyDiv', {
+            toolbox: getWorldCodeToolbox(),
+            zoom: { controls: true, wheel: true }
+        });
+
+        function generateCode() {
+            try {
+                const code = Blockly.JavaScript.workspaceToCode(workspace);
+                document.getElementById('output').textContent = code;
+                console.log("代碼生成成功");
+            } catch (e) {
+                document.getElementById('output').textContent = `❌ 錯誤: ${e.message}`;
+                console.error("代碼生成失敗:", e);
+            }
+        }
+
+        workspace.addChangeListener(generateCode);
+        generateCode();
+    </script>
+</body>
+
+</html>
